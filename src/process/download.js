@@ -1,13 +1,7 @@
 import getFeeds from '../feed/list';
 import delay from 'delay';
-import { anyProcessRunning } from '../monitor';
 
 export default async () => {
-	if (await anyProcessRunning()) {
-		console.log('Exiting as another process is running');
-		process.exit();
-	}
-
 	await getFeeds().reduce(async (feedPromise, feed) => {
 		await feedPromise;
 
