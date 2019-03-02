@@ -1,10 +1,13 @@
 import YoutubeChannel from 'youtube-channel-video-fetcher';
-import getFeeds from './src/feed/list';
-import Video from './src/feed/video';
+import getFeeds from '../feed/list';
+import Video from '../feed/video';
 
-require('dotenv').config();
+export default async () => {
+	if (await anyProcessRunning()) {
+		console.log('Exiting as another process is running');
+		process.exit();
+	}
 
-(async () => {
 	await getFeeds().map(async feed => {
 		const youtubeChannel = new YoutubeChannel(feed.getId());
 		const youtubeVideos = await youtubeChannel.getVideos();
@@ -25,4 +28,4 @@ require('dotenv').config();
 
 		feed.getStore().write();
 	});
-})()
+}

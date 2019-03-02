@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "fetch": "node -r esm fetch.js",
-    "download": "node -r esm download.js",
-    "publish": "node -r esm publish.js",
+    "fetch": "node -r esm process.js fetch --single-mode",
+    "download": "node -r esm process.js download --single-mode",
+    "publish": "node -r esm process.js publish --single-mode",
     "dev:clear-feeds": "rm public/feeds/*.json; rm public/feeds/*.xml",
     "dev:clear-audio": "rm public/audio/*.mp3",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,12 +15,14 @@
   "license": "ISC",
   "dependencies": {
     "async": "^2.6.2",
+    "commander": "^2.19.0",
     "delay": "^4.1.0",
     "dotenv": "^6.2.0",
     "esm": "^3.2.7",
     "lodash": "^4.17.11",
     "mp3-duration": "^1.1.0",
     "podcast": "^1.1.0",
+    "psaux": "^0.3.0",
     "simple-youtube-api": "^5.1.1",
     "youtube-channel-video-fetcher": "^0.1.1",
     "ytdl-core": "^0.29.1"

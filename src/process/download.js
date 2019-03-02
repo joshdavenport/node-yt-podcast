@@ -1,11 +1,13 @@
-import async from 'async';
-import getFeeds from './src/feed/list';
-import util from 'util';
+import getFeeds from '../feed/list';
 import delay from 'delay';
+import { anyProcessRunning } from '../monitor';
 
-require('dotenv').config();
+export default async () => {
+	if (await anyProcessRunning()) {
+		console.log('Exiting as another process is running');
+		process.exit();
+	}
 
-(async () => {
 	await getFeeds().reduce(async (feedPromise, feed) => {
 		await feedPromise;
 
@@ -19,11 +21,10 @@ require('dotenv').config();
 			await video.download();
 			feed.getStore().updateVideo(video);
 
+			feed.getStore().write();
 			await delay(2000);
 		}, Promise.resolve())
 
-		feed.getStore().write();
-
 		await delay(2000);
 	}, Promise.resolve());
-})()
+}
