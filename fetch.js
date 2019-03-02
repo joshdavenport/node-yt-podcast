@@ -15,7 +15,7 @@ require('dotenv').config();
 				id: youtubeVideo.id,
 				title: youtubeVideo.title,
 				thumbnail: youtubeVideo.thumbnail,
-				date: Math.floor(youtubeVideo.timestamp / 1000)
+				date: youtubeVideo.timestamp
 			});
 
 			if(feed.isVideoValidForFeed(video) && !feed.isVideoInStore(video)) {

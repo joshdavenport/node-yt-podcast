@@ -1,6 +1,9 @@
-import path from 'path';
+import fs from 'fs';
 import Store from './feed/store';
 import Podcast from 'podcast';
+import YouTube from 'simple-youtube-api';
+import mp3Duration from 'mp3-duration';
+
 class Feed {
 
 	constructor (feedData) {
@@ -33,6 +36,10 @@ class Feed {
 		return this.id;
 	}
 
+	getChannelUrl () {
+		return `https://www.youtube.com/channel/${this.getId()}`;
+	}
+
 	getKey () {
 		return this.key;
 	}
@@ -55,26 +62,38 @@ class Feed {
 		return this.getStore().hasVideo(video);
 	}
 
-	getPodcastXml () {
+	async getPodcastXml () {
+		const youtube = new YouTube(process.env.YOUTUBE_API_KEY);
+		const channel = await youtube.getChannelByID(this.getId());
+		
 		// TODO: Add more metadata: thumbnail, author, url
 		const feedPodcast = new Podcast({
 			title: this.getName(),
 			description: this.getDescription(),
-			image_url: 
+			site_url: this.getChannelUrl(),
+			image_url: channel.thumbnails.high.url
 		});
 
 		this.getStore().getVideos(true).forEach(video => {
+			const fileStats = fs.statSync(video.getFilePath());
+
 			feedPodcast.addItem({
 				title: video.getTitle(),
-				url: video.getFileUrl(),
+				url: video.getUrl(),
+				enclosure: {
+					url: video.getFileUrl(),
+					type: 'audio/mpeg',
+					size: fileStats.size
+				},
 				guid: video.getId(),
 				// TODO: parse in moment and convert to standard datetime format
 				date: video.getDate(),
-				itunesImage: video.getThumbnail()
+				itunesImage: video.getThumbnail(),
+				// itunesDuration: mp3Duration(video.getFilePath()),
 			})
 		});
 
-		return feedPodcast.buildXml();
+		return feedPodcast.buildXml(true);
 	}
 
 }

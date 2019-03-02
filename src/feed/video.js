@@ -41,7 +41,7 @@ class Video {
 	}
 
 	getFileUrl () {
-		return `https://podcaster/audio/${this.getFileName()}`;
+		return `${process.env.APP_URL}audio/${this.getFileName()}`;
 	}
 
 	getFilePath () {
@@ -65,7 +65,14 @@ class Video {
 	async download () {
 		let download = new Promise((resolve, reject) => {
 			const stream = fs.createWriteStream(this.getFilePath());
-			const video = ytdl(this.getUrl(), { filter: 'audioonly', quality: 'lowestaudio' });
+			const video = ytdl(
+				this.getUrl(), 
+				{   
+					filter: 'audioonly',
+					quality: 'highestaudio',
+					format: 'mp3'
+				}
+			);
 			let previousPercentage = 0;
 
 			console.log(`[${this.getId()}] Starting download`);

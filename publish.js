@@ -1,5 +1,5 @@
 import getFeeds from './src/feed/list';
-import fs from 'fs';
+import fs, { writeFileSync } from 'fs';
 import path from 'path';
 
 require('dotenv').config();
@@ -7,7 +7,8 @@ require('dotenv').config();
 (async () => {
 	await getFeeds().reduce(async (feedPromise, feed) => {
 		await feedPromise;
-
-		fs.writeFileSync(path.resolve(__dirname, `./public/feeds/${feed.getKey()}.xml`), feed.getPodcastXml());
+		const xml = await feed.getPodcastXml()
+		
+		fs.writeFileSync(path.resolve(__dirname, `./public/feeds/${feed.getKey()}.xml`), xml);
 	}, Promise.resolve());
 })()
