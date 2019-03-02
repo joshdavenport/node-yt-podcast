@@ -3,11 +3,6 @@ import getFeeds from '../feed/list';
 import Video from '../feed/video';
 
 export default async () => {
-	if (await anyProcessRunning()) {
-		console.log('Exiting as another process is running');
-		process.exit();
-	}
-
 	await getFeeds().map(async feed => {
 		const youtubeChannel = new YoutubeChannel(feed.getId());
 		const youtubeVideos = await youtubeChannel.getVideos();
