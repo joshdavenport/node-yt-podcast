@@ -1,4 +1,4 @@
-import ytdl from 'ytdl-core';
+import youtubedl from 'youtube-dl';
 import fs from 'fs';
 import path from 'path';
 
@@ -64,41 +64,26 @@ class Video {
 
 	async download () {
 		let download = new Promise((resolve, reject) => {
-			const stream = fs.createWriteStream(this.getFilePath());
-			const video = ytdl(
-				this.getUrl(), 
-				{   
-					filter: 'audioonly',
-					quality: 'highestaudio',
-					format: 'mp3'
-				}
-			);
-			let previousPercentage = 0;
-
 			console.log(`[${this.getId()}] Starting download`);
 
-			video.pipe(stream);
-			video.on('response', res => {
-				const totalSize = res.headers['content-length'];
-				let dataRead = 0;
-
-				res.on('data', data => {
-					dataRead += data.length;
-					const percent = Math.round(dataRead / totalSize * 100);
-
-					if(percent !== previousPercentage) {
-						previousPercentage = percent;
-						process.stdout.cursorTo(0);
-						process.stdout.clearLine(1);
-						process.stdout.write(`[${this.getId()}] ${percent}%`);
-					}
-				});
-			})
-
-			stream.on('close', () => {
-				console.log(`\n[${this.getId()}] Finished download`);
-				resolve();
-			});
+			const stream = fs.createWriteStream(this.getFilePath());
+			const video = youtubedl.exec(
+				this.getUrl(), 
+				[
+					'-x',
+					'--audio-format','mp3',
+					'--audio-quality','8',
+					'--prefer-ffmpeg',
+					'--exec',`'mv {} ${this.getId()}.mp3'`
+				],
+				{ 
+					cwd: path.resolve(__dirname, '../../public/audio')
+				},
+				(err, output) => {
+					console.log(`\n[${this.getId()}] Finished download`);
+					resolve();
+				}
+			);
 		});
 
 		await download;

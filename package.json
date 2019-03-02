@@ -25,7 +25,7 @@
     "psaux": "^0.3.0",
     "simple-youtube-api": "^5.1.1",
     "youtube-channel-video-fetcher": "^0.1.1",
-    "ytdl-core": "^0.29.1"
+    "youtube-dl": "^1.12.2"
   },
   "esm": {
     "mode": "auto",
