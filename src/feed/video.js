@@ -66,7 +66,6 @@ class Video {
 		let download = new Promise((resolve, reject) => {
 			console.log(`[${this.getId()}] Starting download`);
 
-			const stream = fs.createWriteStream(this.getFilePath());
 			const video = youtubedl.exec(
 				this.getUrl(), 
 				[
@@ -74,7 +73,7 @@ class Video {
 					'--audio-format','mp3',
 					'--audio-quality','8',
 					'--prefer-ffmpeg',
-					'--exec',`'mv {} ${this.getId()}.mp3'`
+					'-o',`${this.getId()}.%(ext)s`
 				],
 				{ 
 					cwd: path.resolve(__dirname, '../../public/audio')
