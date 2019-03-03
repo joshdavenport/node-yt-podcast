@@ -7,6 +7,6 @@ export default async () => {
 		await feedPromise;
 		const xml = await feed.getPodcastXml()
 
-		fs.writeFileSync(path.resolve(__dirname, `./public/feeds/${feed.getKey()}.xml`), xml);
+		fs.writeFileSync(path.resolve(__dirname, `../../public/feeds/${feed.getKey()}.xml`), xml);
 	}, Promise.resolve());
 }
