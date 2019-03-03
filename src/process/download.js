@@ -12,7 +12,10 @@ export default async () => {
 		await videosToProcess.reduce(async (videoPromise, video) => {
 			await videoPromise;
 
+			console.log(`[${video.getId()}] Starting download`);
 			await video.download();
+			console.log(`\n[${this.getId()}] Finished download`);
+
 			feed.getStore().updateVideo(video);
 			feed.getStore().write();
 			

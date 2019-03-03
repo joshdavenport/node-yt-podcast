@@ -64,8 +64,6 @@ class Video {
 
 	async download () {
 		let download = new Promise((resolve, reject) => {
-			console.log(`[${this.getId()}] Starting download`);
-
 			const video = youtubedl.exec(
 				this.getUrl(), 
 				[
@@ -79,7 +77,6 @@ class Video {
 					cwd: path.resolve(__dirname, '../../public/audio')
 				},
 				(err, output) => {
-					console.log(`\n[${this.getId()}] Finished download`);
 					resolve();
 				}
 			);
