@@ -3,10 +3,13 @@ import getFeeds from '../feed/list';
 import Video from '../feed/video';
 
 export default async () => {
-	await getFeeds().map(async feed => {
+	await getFeeds().reduce(async (feedPromise, feed) => {
+		await feedPromise;
+
+		console.log(`[${feed.getId()}] Processing feed`);
+
 		const youtubeChannel = new YoutubeChannel(feed.getId());
 		const youtubeVideos = await youtubeChannel.getVideos();
-		const feedTitleRegex = new RegExp(feed.regex);
 
 		youtubeVideos.videos.reverse().forEach(youtubeVideo => {
 			let video = new Video({
@@ -17,10 +20,12 @@ export default async () => {
 			});
 
 			if(feed.isVideoValidForFeed(video) && !feed.isVideoInStore(video)) {
+				console.log(`[${feed.getId()}] Added video ${video.getId()}`);
+
 				feed.getStore().addVideo(video);
 			}
 		});
 
 		feed.getStore().write();
-	});
+	}, Promise.resolve());
 }
