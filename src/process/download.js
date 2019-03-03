@@ -14,8 +14,8 @@ export default async () => {
 
 			await video.download();
 			feed.getStore().updateVideo(video);
-
 			feed.getStore().write();
+			
 			await delay(2000);
 		}, Promise.resolve())
 
