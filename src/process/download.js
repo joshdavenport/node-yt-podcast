@@ -14,7 +14,7 @@ export default async () => {
 
 			console.log(`[${video.getId()}] Starting download`);
 			await video.download();
-			console.log(`\n[${this.getId()}] Finished download`);
+			console.log(`\n[${video.getId()}] Finished download`);
 
 			feed.getStore().updateVideo(video);
 			feed.getStore().write();
