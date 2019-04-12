@@ -58,7 +58,6 @@ class Feed {
 		const titleMatches = this.getRegex().exec(video.getTitle());
 
 		if(this.store.getLastVideo()) {
-			console.log(titleMatches && this.store.getLastVideo().getDate() < video.getDate());
 			return titleMatches && this.store.getLastVideo().getDate() < video.getDate();
 		} else {
 			return titleMatches;
