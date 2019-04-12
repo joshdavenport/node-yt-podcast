@@ -55,7 +55,14 @@ class Feed {
 	}
 
 	isVideoValidForFeed (video) {
-		return this.getRegex().exec(video.getTitle());
+		const titleMatches = this.getRegex().exec(video.getTitle());
+
+		if(this.store.getLastVideo()) {
+			console.log(titleMatches && this.store.getLastVideo().getDate() < video.getDate());
+			return titleMatches && this.store.getLastVideo().getDate() < video.getDate();
+		} else {
+			return titleMatches;
+		}
 	}
 
 	isVideoInStore (video) {

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import _ from 'lodash';
 import Video from './video';
 
 class Store {
@@ -47,6 +48,10 @@ class Store {
 
 	hasVideo (video) {
 		return !!this.data.find(storeVideo => video.getId() === storeVideo.getId());
+	}
+
+	getLastVideo () {
+		return _.last(this.data);
 	}
 
 	write () {
