@@ -13,7 +13,11 @@ export default async () => {
 			await videoPromise;
 
 			console.log(`[${video.getId()}] Starting download`);
-			await video.download();
+			try {
+				await video.download();
+			} catch (err) {
+				console.error(`[${video.getId()}] ${e.message}`);
+			}
 			console.log(`\n[${video.getId()}] Finished download`);
 
 			feed.getStore().updateVideo(video);

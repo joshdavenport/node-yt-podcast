@@ -63,6 +63,10 @@ class Video {
 	}
 
 	async download () {
+		if(this.getFile()) {
+			throw new Exception('Attempt to re-download an existing video, perhaps it was not stored correctly?');
+		}
+
 		let download = new Promise((resolve, reject) => {
 			const video = youtubedl.exec(
 				this.getUrl(), 
