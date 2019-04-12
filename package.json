@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "fetch": "node -r esm process.js fetch --single-mode",
-    "download": "node -r esm process.js download --single-mode",
-    "publish": "node -r esm process.js publish --single-mode",
+    "fetch": "date && node -r esm process.js fetch --single-mode",
+    "download": "date && node -r esm process.js download --single-mode",
+    "publish": "date && node -r esm process.js publish --single-mode",
     "dev:clear-feeds": "rm public/feeds/*.json; rm public/feeds/*.xml",
     "dev:clear-audio": "rm public/audio/*.mp3",
     "test": "echo \"Error: no test specified\" && exit 1"
